@@ -1,18 +1,21 @@
-var
-express = require(
-'express'
+const express = require('express');
+
+const config = {
+  port: 3000,
+  db: {
+    url:'mongodb://localhost:27017/test'
+  }
+};
+
+var messages = require('./lib/messages')(
+  config.db.url,
+  function(err){
+    if(err) new Error(err);
+    var app = express();
+    app.use(require('./routes/hello'));
+    app.use('/api/v1/messages/',require('./routes/messages')(messages));
+    app.listen(config.port,function(){
+      console.log('Listening on port ' + config.port);
+    });
+  }
 );
-var
-app = express();
-app.get('/',function(req,res){res.send('Its over 9000!');
-});
-app.post('/',function(req,res){res.sendStatus(staus.MEHTOD_NOT_ALLOWED); };
-var
-port = 9001;
-app.listen(port,
-function
-(){
-console.log(
-'Listening on port ' 
-+ port);
-});
